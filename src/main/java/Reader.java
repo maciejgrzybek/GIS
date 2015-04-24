@@ -22,6 +22,7 @@ public class Reader {
             pathStr = URLDecoder.decode(resource.getPath(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            throw new RuntimeException("Unable to decode path");
         }
         Path path = Paths.get(new File(pathStr).getPath());
 
