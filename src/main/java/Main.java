@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,7 +12,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         URL resource = Main.class.getResource("data.txt");
-        Path path = Paths.get(resource.getPath());
+        String pathStr = URLDecoder.decode(resource.getPath(), "UTF-8");
+        Path path = Paths.get(new File(pathStr).getPath());
 
         final List<Arc> arcs = readArcs(path);
 
