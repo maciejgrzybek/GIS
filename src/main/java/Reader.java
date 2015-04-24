@@ -1,5 +1,8 @@
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,7 +17,13 @@ import java.util.stream.Stream;
 public class Reader {
     public static List<Arc> readArcs(String resourceFile) {
         URL resource = Main.class.getResource(resourceFile);
-        Path path = Paths.get(resource.getPath());
+        String pathStr = null;
+        try {
+            pathStr = URLDecoder.decode(resource.getPath(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Path path = Paths.get(new File(pathStr).getPath());
 
         return readArcs(path);
     }
