@@ -31,14 +31,35 @@ public class ColorMaker {
         return new HashMap<Integer, List<Arc>>();
     }
 
-    private boolean isCoveredByColor(Arc arc, int currentColor) {
+    private boolean isCoveredByColor(Arc arc, int color) {
         // TODO: implement this
         return false;
     }
 
     private int getPointWithHighestNumberOfIntersections() {
-        // TODO: implement this
-        return -1;
+        List<Integer> pointToNumber = new ArrayList<>(360);
+        for (int i = 0; i < 360; ++i) {
+            pointToNumber.set(i, 0);
+        }
+
+        for (int i = 0; i < 360; ++i) {
+            for (Arc arc : arcs) {
+                if (arc.isWithinRange(i))
+                    pointToNumber.set(i, pointToNumber.get(i) + 1);
+            }
+        }
+
+        int maxId = -1;
+        int max = -1;
+        for (int i = 0; i < pointToNumber.size(); i++) {
+           if (pointToNumber.get(i) > max) {
+               maxId = i;
+               max = pointToNumber.get(i);
+           }
+        }
+
+        return maxId;
+
     }
 
     private Arc getShortestArcCounterClockwiseToThePoint(int startingPoint) {

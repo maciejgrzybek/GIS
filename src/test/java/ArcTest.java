@@ -168,4 +168,16 @@ public class ArcTest {
 
         assertTrue(enclosingArc.covers(enclosedArc));
     }
+
+    @Test
+    public void PointWithinArcIsReportedAsInside() throws Exception {
+        assert arc.getEnd() - arc.getStart() > 1;
+        assertTrue(arc.isWithinRange(arc.getStart() + 1));
+    }
+
+    @Test
+    public void PointWithinArcIsReportedAsInsideEvenForCross360DegreeArcs() throws Exception {
+        final Arc a = new Arc(340, 10);
+        assertTrue(a.isWithinRange(350));
+    }
 }

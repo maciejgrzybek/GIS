@@ -48,6 +48,10 @@ public class Arc implements Comparable<Arc> {
         return start <= other.start && end >= other.end;
     }
 
+    public boolean isWithinRange(int i) {
+        return (i > start && i < end);
+    }
+
     @Override
     public String toString() {
         return "Arc{" +
@@ -69,5 +73,4 @@ public class Arc implements Comparable<Arc> {
     private final int start;
     private final int end;
     private int color; // 0 = undefined
-
 }
