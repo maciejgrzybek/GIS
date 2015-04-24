@@ -1,4 +1,4 @@
-public class Arc {
+public class Arc implements Comparable<Arc> {
     public Arc(int start, int end) {
         this(start, end, 0);
     }
@@ -57,6 +57,11 @@ public class Arc {
                 '}';
     }
 
+    @Override
+    public int compareTo(Arc arc) {
+        return ((Integer)getStart()).compareTo(arc.getStart());
+    }
+
     private static boolean passesThroughModulo(int start, int end) {
         return end < start;
     }
@@ -64,4 +69,5 @@ public class Arc {
     private final int start;
     private final int end;
     private int color; // 0 = undefined
+
 }

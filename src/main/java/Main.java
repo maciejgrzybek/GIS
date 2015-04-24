@@ -3,8 +3,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
@@ -13,8 +12,14 @@ public class Main {
         URL resource = Main.class.getResource("data.txt");
         Path path = Paths.get(resource.getPath());
 
-        for (Arc arc : readArcs(path)) {
-            System.out.println(arc);
+        final List<Arc> arcs = readArcs(path);
+
+        ColorMaker colorMaker = new ColorMaker(arcs);
+        colorMaker.colorGraph();
+        final Map<Integer, List<Arc>> result = colorMaker.getColors();
+
+        for (Map.Entry<Integer, List<Arc>> entry : result.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
 
