@@ -37,6 +37,15 @@ public class Arc {
         return start <= other.start && end >= other.end;
     }
 
+    @Override
+    public String toString() {
+        return "Arc{" +
+                "start=" + start +
+                ", end=" + end +
+                ", color=" + color +
+                '}';
+    }
+
     public final int start;
     public final int end;
     private int color; // 0 = undefined
