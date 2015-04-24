@@ -9,10 +9,8 @@ import java.util.stream.Stream;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        URL resource = Main.class.getResource("data.txt");
-        Path path = Paths.get(resource.getPath());
-
-        final List<Arc> arcs = readArcs(path);
+        final List<Arc> arcs = Reader.readArcs("data.txt");
+        System.out.println(arcs);
 
         ColorMaker colorMaker = new ColorMaker(arcs);
         colorMaker.colorGraph();
@@ -23,20 +21,5 @@ public class Main {
         }
     }
 
-    private static List<Arc> readArcs(Path path) {
-        List<Arc> arcs = new ArrayList<>();
-        try(Stream<String> lines = Files.lines(path)){
-            lines.forEach(p -> {
-                p = p.replaceAll("\\s+","");
-                String[] values = p.split(",");
-                int start = Integer.parseInt(values[0]);
-                int end = Integer.parseInt(values[1]);
-                arcs.add(new Arc(start, end));
-            });
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return arcs;
-    }
 }

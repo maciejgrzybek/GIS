@@ -36,10 +36,10 @@ public class ColorMaker {
         return false;
     }
 
-    private int getPointWithHighestNumberOfIntersections() {
-        List<Integer> pointToNumber = new ArrayList<>(360);
+    public int getPointWithHighestNumberOfIntersections() {
+        List<Integer> pointToNumber = new ArrayList<>();
         for (int i = 0; i < 360; ++i) {
-            pointToNumber.set(i, 0);
+            pointToNumber.add(0);
         }
 
         for (int i = 0; i < 360; ++i) {
@@ -59,7 +59,6 @@ public class ColorMaker {
         }
 
         return maxId;
-
     }
 
     private Arc getShortestArcCounterClockwiseToThePoint(int startingPoint) {
