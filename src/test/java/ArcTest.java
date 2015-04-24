@@ -37,6 +37,30 @@ public class ArcTest {
         assertTrue(arc.isColored());
     }
 
+    @Test
+    public void AfterColoringAColorIsRetrievable() throws Exception {
+        arc.color(5);
+
+        assertEquals(arc.getColor(), 5);
+    }
+
+    @Test
+    public void StartPointIsRetrievable() throws Exception {
+        assertEquals(arc.getStart(), arcStart);
+    }
+
+    @Test
+    public void EndPointIsRetrievable() throws Exception {
+        assertEquals(arc.getEnd(), arcEnd);
+    }
+
+    @Test
+    public void EndPointIsCorrectEvenWhenArcPasses360Degree() throws Exception {
+        final Arc passing360Arc = new Arc(340, 30);
+
+        assertEquals(passing360Arc.getEnd(), 30);
+    }
+
     @Test(expected=UnsupportedOperationException.class)
     public void RecoloringThrows() throws Exception {
         arc.color(2);
@@ -46,8 +70,8 @@ public class ArcTest {
 
     @Test
     public void CoversReturnsTrueWhenGivenArcIsCovered() throws Exception {
-        assert arc.end - arc.start > 2;
-        final Arc otherArc = new Arc(arc.start + 1, arc.end - 1);
+        assert arc.getEnd() - arc.getStart() > 2;
+        final Arc otherArc = new Arc(arc.getStart() + 1, arc.getEnd() - 1);
 
         assertTrue(arc.covers(otherArc));
     }
@@ -61,8 +85,8 @@ public class ArcTest {
 
     @Test
     public void CoversReturnsFalseWhenArcIsPartiallyCovered() throws Exception {
-        assert arc.end - arc.start > 1;
-        final Arc otherArc = new Arc(arc.start - 1, arc.start + 1);
+        assert arc.getEnd() - arc.getStart() > 1;
+        final Arc otherArc = new Arc(arc.getStart() - 1, arc.getStart() + 1);
 
         assertFalse(arc.covers(otherArc));
     }
@@ -90,17 +114,17 @@ public class ArcTest {
 
     @Test
     public void ArcWithCommonEndWithOtherContainsIt() throws Exception {
-        assert arc.end - arc.start > 1;
-        final Arc stuckArc = new Arc(arc.end - 1, arc.end + 1);
+        assert arc.getEnd() - arc.getStart() > 1;
+        final Arc stuckArc = new Arc(arc.getEnd() - 1, arc.getEnd() + 1);
 
         assertTrue(arc.contains(stuckArc));
     }
 
     @Test
     public void ArcWithCommonStartWithOtherIsContainedByIt() throws Exception {
-        assert arc.start > 1;
-        assert arc.end - arc.start > 0;
-        final Arc startingArc = new Arc(arc.start - 2, arc.start + 1);
+        assert arc.getStart() > 1;
+        assert arc.getEnd() - arc.getStart() > 0;
+        final Arc startingArc = new Arc(arc.getStart() - 2, arc.getStart() + 1);
 
         assertTrue(arc.contains(startingArc));
     }
@@ -114,25 +138,34 @@ public class ArcTest {
 
     @Test
     public void ArcStuckWithEndingContainsTheOtherOne() throws Exception {
-        assert arc.end - arc.start > 1;
-        final Arc stuckArc = new Arc(arc.end - 1, arc.end + 1);
+        assert arc.getEnd() - arc.getStart() > 1;
+        final Arc stuckArc = new Arc(arc.getEnd() - 1, arc.getEnd() + 1);
 
         assertTrue(arc.intersects(stuckArc));
     }
 
     @Test
     public void ArcStuckedWithStartContainsTheOtherOne() throws Exception {
-        assert arc.start > 1;
-        assert arc.end - arc.start > 0;
-        final Arc startingArc = new Arc(arc.start - 2, arc.start + 1);
+        assert arc.getStart() > 1;
+        assert arc.getEnd() - arc.getStart() > 0;
+        final Arc startingArc = new Arc(arc.getStart() - 2, arc.getStart() + 1);
 
         assertTrue(arc.intersects(startingArc));
     }
 
     @Test
-    public void AfterSettingAColorItsRetrievable() throws Exception {
-        arc.color(5);
+    public void ArcWithCommonEndingInModuloIsContainedByTheOther() throws Exception {
+        final Arc firstArc = new Arc(330, 10);
+        final Arc secondArc = new Arc(340, 30);
 
-        assertEquals(arc.getColor(), 5);
+        assertTrue(firstArc.contains(secondArc));
+    }
+
+    @Test
+    public void ArcBefore360DegreeEnclosedWithinArcSpreadingThrough360DegreeIsCoveredByIt() throws Exception {
+        final Arc enclosedArc = new Arc(340, 350);
+        final Arc enclosingArc = new Arc(300, 60);
+
+        assertTrue(enclosingArc.covers(enclosedArc));
     }
 }

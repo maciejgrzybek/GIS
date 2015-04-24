@@ -4,6 +4,9 @@ public class Arc {
     }
 
     public Arc(int start, int end, int color) {
+        if (passesThroughModulo(start, end))
+            end += 360;
+
         this.start = start;
         this.end = end;
         this.color = color;
@@ -21,6 +24,14 @@ public class Arc {
 
     public int getColor() {
         return color;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end % 360;
     }
 
     public boolean intersects(Arc other) {
@@ -46,7 +57,11 @@ public class Arc {
                 '}';
     }
 
-    public final int start;
-    public final int end;
+    private static boolean passesThroughModulo(int start, int end) {
+        return end < start;
+    }
+
+    private final int start;
+    private final int end;
     private int color; // 0 = undefined
 }
