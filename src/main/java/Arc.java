@@ -49,7 +49,7 @@ public class Arc implements Comparable<Arc> {
     }
 
     public boolean isWithinRange(int i) {
-        return (i > start && i < end);
+        return (i >= start && i <= end);
     }
 
     @Override
