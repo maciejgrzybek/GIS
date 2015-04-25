@@ -28,7 +28,7 @@ public class ColorMaker {
     }
 
     public Map<Integer,List<Arc>> getColors() {
-        return new HashMap<Integer, List<Arc>>();
+        return new HashMap<>();
     }
 
     private boolean isCoveredByColor(Arc arc, int color) {
@@ -37,27 +37,27 @@ public class ColorMaker {
     }
 
     public int getPointWithHighestNumberOfIntersections() {
-        List<Integer> pointToNumber = new ArrayList<>();
-        for (int i = 0; i < 360; ++i) {
-            pointToNumber.add(0);
-        }
+        final int[] pointToCount = new int[360];
 
         for (int i = 0; i < 360; ++i) {
             for (Arc arc : arcs) {
                 if (arc.isWithinRange(i))
-                    pointToNumber.set(i, pointToNumber.get(i) + 1);
+                    ++pointToCount[i];
             }
         }
 
+        return getIdOfBiggestElement(pointToCount);
+    }
+
+    private int getIdOfBiggestElement(int[] pointToNumber) {
         int maxId = -1;
         int max = -1;
-        for (int i = 0; i < pointToNumber.size(); i++) {
-           if (pointToNumber.get(i) > max) {
+        for (int i = 0; i < pointToNumber.length; ++i) {
+           if (pointToNumber[i] > max) {
                maxId = i;
-               max = pointToNumber.get(i);
+               max = pointToNumber[i];
            }
         }
-
         return maxId;
     }
 
