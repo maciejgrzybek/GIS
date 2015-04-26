@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ColorMakerTest {
@@ -69,5 +70,29 @@ public class ColorMakerTest {
         final ColorMaker colorMaker = new ColorMaker(arcs);
         final int point = colorMaker.getPointWithHighestNumberOfIntersections();
         assertTrue( (point >= 355 && point <= 359) || (point >= 0 && point <= 5) );
+    }
+
+    @Test
+    public void testGetShortestArcCounterClockwiseToThePoint() throws Exception {
+        final Arc expectedArc = new Arc(15,30);
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(expectedArc);
+            add(new Arc(5, 50));
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+        final int point = 20;
+        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+    }
+
+    @Test
+    public void testGetShortestArcCounterClockwiseToThePointModuloVersion() throws Exception {
+        final Arc expectedArc = new Arc(350,30);
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(expectedArc);
+            add(new Arc(315, 50));
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+        final int point = 5;
+        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
     }
 }

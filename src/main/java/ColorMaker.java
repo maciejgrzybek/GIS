@@ -61,9 +61,21 @@ public class ColorMaker {
         return maxId;
     }
 
-    private Arc getShortestArcCounterClockwiseToThePoint(int startingPoint) {
-        // TODO: implement this
-        return null;
+    public Arc getShortestArcCounterClockwiseToThePoint(int startingPoint) {
+        Arc shortestArc = null;
+        int shortestLength = Integer.MAX_VALUE;
+
+        for (Arc arc : arcs) {
+            if (arc.isWithinRange(startingPoint)) {
+                int length = arc.getArcLengthFromStartToPointWhichContains(startingPoint);
+                if (length < shortestLength) {
+                    shortestArc = arc;
+                    shortestLength = length;
+                }
+            }
+        }
+
+        return shortestArc;
     }
 
     private void colorArc(Arc arc) {
