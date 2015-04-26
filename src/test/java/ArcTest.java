@@ -197,4 +197,44 @@ public class ArcTest {
         assertTrue(a.isWithinRange(350));
     }
 
+    @Test
+    public void testGetArcLengthFromStartToPointWhichContains() {
+        final Arc a = new Arc(340, 20);
+
+        assertEquals(10, a.getArcLengthFromStartToPointWhichContains(350));
+        assertEquals(20, a.getArcLengthFromStartToPointWhichContains(0));
+        assertEquals(30, a.getArcLengthFromStartToPointWhichContains(10));
+
+        final Arc b = new Arc(0, 20);
+
+        assertEquals(0, b.getArcLengthFromStartToPointWhichContains(0));
+        assertEquals(2, b.getArcLengthFromStartToPointWhichContains(2));
+        assertEquals(20, b.getArcLengthFromStartToPointWhichContains(20));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGetArcLengthFromStartToPointWhichContainsException(){
+        final Arc a = new Arc(10, 20);
+        a.getArcLengthFromStartToPointWhichContains(350);
+    }
+
+    @Test
+    public void testIsWithinRange() {
+        final Arc a = new Arc(340, 20);
+
+        assertTrue(a.isWithinRange(350));
+        assertTrue(a.isWithinRange(0));
+        assertTrue(a.isWithinRange(10));
+        assertFalse(a.isWithinRange(40));
+
+        final Arc b = new Arc(40, 120);
+        assertTrue(b.isWithinRange(40));
+        assertTrue(b.isWithinRange(50));
+        assertTrue(b.isWithinRange(120));
+        assertFalse(b.isWithinRange(350));
+
+        final Arc c = new Arc(40, 120);
+        assertFalse(c.isWithinRange(0));
+    }
+
 }
