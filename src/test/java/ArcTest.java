@@ -154,6 +154,22 @@ public class ArcTest {
     }
 
     @Test
+    public void ArcSpreadingThrough360DegreeContainsAnotherArcSpreadingThrough360() throws Exception {
+        final Arc bigArc = new Arc(300, 100);
+        final Arc smallArc = new Arc(359, 40);
+
+        assertTrue(bigArc.contains(smallArc));
+    }
+
+    @Test
+    public void ArcSpreadingThrough360DegreeContainsAnotherArcStartingAfter0() throws Exception {
+        final Arc bigArc = new Arc(300, 100);
+        final Arc smallArc = new Arc(0, 40);
+
+        assertTrue(bigArc.contains(smallArc));
+    }
+
+    @Test
     public void ArcWithCommonEndingInModuloIsContainedByTheOther() throws Exception {
         final Arc firstArc = new Arc(330, 10);
         final Arc secondArc = new Arc(340, 30);
@@ -180,4 +196,5 @@ public class ArcTest {
         final Arc a = new Arc(340, 10);
         assertTrue(a.isWithinRange(350));
     }
+
 }
