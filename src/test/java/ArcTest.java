@@ -170,6 +170,14 @@ public class ArcTest {
     }
 
     @Test
+    public void ArcSpreadingThrough360DegreeCoversAnotherArcStartingAfter0() throws Exception {
+        final Arc bigArc = new Arc(300, 100);
+        final Arc smallArc = new Arc(10, 40);
+
+        assertTrue(bigArc.covers(smallArc));
+    }
+
+    @Test
     public void ArcWithCommonEndingInModuloIsContainedByTheOther() throws Exception {
         final Arc firstArc = new Arc(330, 10);
         final Arc secondArc = new Arc(340, 30);
