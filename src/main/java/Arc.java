@@ -49,7 +49,25 @@ public class Arc implements Comparable<Arc> {
     }
 
     public boolean isWithinRange(int i) {
-        return (i >= start && i <= end);
+        if (start >= end) {
+            return (i >= start && i <= end);
+        }
+
+        return ((i >= start && i < 360) ||
+                (i >= 0 && i <= end));
+    }
+
+    public int getArcLengthToPointWhichContains(int point) {
+        if (!isWithinRange(point)) {
+            throw new IllegalStateException("The arc " + this + " doesn't contain point: " + point);
+        }
+
+        if (start <= point) {
+            return point - start;
+        } else {
+            int lengthFromStartToZero = 360 - start;
+            return lengthFromStartToZero + point;
+        }
     }
 
     @Override
