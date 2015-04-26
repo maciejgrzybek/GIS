@@ -50,7 +50,7 @@ public class Arc implements Comparable<Arc> {
 
     public boolean isWithinRange(int i) {
         int tempEnd = end;
-        if (end >= 360) {
+        if (isSpreadingThrough360()) {
             tempEnd -= 360;
         }
 
@@ -76,7 +76,7 @@ public class Arc implements Comparable<Arc> {
     }
 
     public boolean isSpreadingThrough360() {
-        return (end > 360);
+        return (end >= 360);
     }
 
     @Override
