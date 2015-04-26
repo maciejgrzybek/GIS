@@ -75,6 +75,10 @@ public class Arc implements Comparable<Arc> {
         return tempPoint - start;
     }
 
+    public boolean isSpreadingThrough360() {
+        return (end > 360);
+    }
+
     @Override
     public String toString() {
         return "Arc{" +

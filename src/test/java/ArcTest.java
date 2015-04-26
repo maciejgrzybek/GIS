@@ -245,4 +245,13 @@ public class ArcTest {
         assertFalse(c.isWithinRange(0));
     }
 
+    @Test
+    public void testIsSpreadingThrough360() {
+        final Arc a = new Arc(340, 20);
+        assertTrue(a.isSpreadingThrough360());
+
+        final Arc b = new Arc(0, 20);
+        assertFalse(b.isSpreadingThrough360());
+    }
+
 }
