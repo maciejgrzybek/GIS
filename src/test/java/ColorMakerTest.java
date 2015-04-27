@@ -103,6 +103,31 @@ public class ColorMakerTest {
     }
 
     @Test
+    public void WhenAStartingPointIsAtTheBeginningOfOneArc() throws Exception {
+        final Arc expectedArc = new Arc(330,30);
+        final int point = 30;
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(new Arc(30, 50));
+            add(expectedArc);
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+    }
+
+    @Test
+    public void WhenAStartingPointIsAtTheBeginningOfOneArcAndThisIsTheOnlyOneArc() throws Exception {
+        final Arc expectedArc = new Arc(30,60);
+        final int point = 30;
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(expectedArc);
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+    }
+
+    @Test
     public void WhenTwoArcsAreDisjointTheyHaveTheSameColor() throws Exception {
         final List<Arc> arcs = new ArrayList<Arc>() {{
             add(new Arc(10, 20));
