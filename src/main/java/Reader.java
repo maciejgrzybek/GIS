@@ -10,39 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Created by krris on 24.04.15.
- * Copyright (c) 2015 krris. All rights reserved.
- */
 public class Reader {
-    public static List<Arc> readArcs(String resourceFile) {
-        URL resource = Main.class.getResource(resourceFile);
-        String pathStr = null;
-        try {
-            pathStr = URLDecoder.decode(resource.getPath(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Unable to decode path");
-        }
-        Path path = Paths.get(new File(pathStr).getPath());
-
-        return readArcs(path);
+    public Reader(String path) {
+        this.path = Paths.get(path);
     }
 
-    private static List<Arc> readArcs(Path path) {
-        List<Arc> arcs = new ArrayList<>();
-        try(Stream<String> lines = Files.lines(path)){
-            lines.forEach(p -> {
-                p = p.replaceAll("\\s+","");
-                String[] values = p.split(",");
-                int start = Integer.parseInt(values[0]);
-                int end = Integer.parseInt(values[1]);
-                arcs.add(new Arc(start, end));
-            });
+    public Reader(Path path) {
+        this.path = path;
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public List<Arc> readArcs() throws IOException {
+        final List<Arc> arcs = new ArrayList<>();
+        Stream<String> lines = Files.lines(path);
+        lines.forEach(p -> {
+            p = p.replaceAll("\\s+","");
+            String[] values = p.split(",");
+            final int start = Integer.parseInt(values[0]);
+            final int end = Integer.parseInt(values[1]);
+            arcs.add(new Arc(start, end));
+        });
         return arcs;
     }
+
+    private final Path path;
 }

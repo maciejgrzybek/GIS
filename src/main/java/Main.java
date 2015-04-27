@@ -3,10 +3,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        final List<Arc> arcs = Reader.readArcs("data.txt");
-        System.out.println(arcs);
+        if (args.length < 1) {
+            System.out.println("Usage:");
+            System.out.println("program_name path_to_input.txt");
+            return;
+        }
+
+        Reader inputReader = new Reader(args[0]);
+        List<Arc> arcs = null;
+        try {
+            arcs = inputReader.readArcs();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to read arcs");
+        }
 
         ColorMaker colorMaker = new ColorMaker(arcs);
         colorMaker.colorGraph();
