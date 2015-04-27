@@ -128,6 +128,55 @@ public class ColorMakerTest {
     }
 
     @Test
+    public void HavingTwoDisjointArcsTheSecondOneIsNext() throws Exception {
+        final Arc first = new Arc(30, 60);
+        final Arc second = new Arc(90, 120);
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(first);
+            add(second);
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(1, colorMaker.getNextArcAfterGiven(first));
+        assertEquals(0, colorMaker.getNextArcAfterGiven(second));
+    }
+
+    @Test
+    public void HavingArcOverlappingAndOneStartingAfterArcsEndTheLatterIsNext() throws Exception {
+        final Arc first = new Arc(30, 60);
+        final Arc second = new Arc(40, 70);
+        final Arc third = new Arc(90, 120);
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(first);
+            add(second);
+            add(third);
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(2, colorMaker.getNextArcAfterGiven(first));
+    }
+
+    @Test
+    public void WhenThereIsOneArcItsItselfNext() throws Exception {
+        final Arc first = new Arc(30, 60);
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(first);
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(0, colorMaker.getNextArcAfterGiven(first));
+    }
+
+    @Test
+    public void WhenThereIsNoneArcsThereIsNoNextElement() throws Exception {
+        final Arc arc = new Arc(30, 60);
+        final List<Arc> arcs = new ArrayList<>();
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        assertEquals(-1, colorMaker.getNextArcAfterGiven(arc));
+    }
+
+    @Test
     public void WhenTwoArcsAreDisjointTheyHaveTheSameColor() throws Exception {
         final List<Arc> arcs = new ArrayList<Arc>() {{
             add(new Arc(10, 20));
