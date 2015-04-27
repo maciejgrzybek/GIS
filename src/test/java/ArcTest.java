@@ -236,4 +236,5 @@ public class ArcTest {
         final Arc a = new Arc(340, 10);
         assertTrue(a.isWithinRange(350));
     }
+
 }
