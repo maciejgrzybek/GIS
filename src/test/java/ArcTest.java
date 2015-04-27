@@ -61,7 +61,7 @@ public class ArcTest {
         assertEquals(passing360Arc.getEnd(), 30);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void RecoloringThrows() throws Exception {
         arc.color(2);
 
@@ -103,6 +103,22 @@ public class ArcTest {
         final Arc disjointArc = produceDisjointArc();
 
         assertFalse(arc.contains(disjointArc));
+    }
+
+    @Test
+    public void ArcDoesNotContainDisjointOneWhenSeparatedBy360Degree() throws Exception {
+        final Arc before360 = new Arc(330, 350);
+        final Arc after360 = new Arc(10, 20);
+
+        assertFalse(before360.contains(after360));
+    }
+
+    @Test
+    public void ArcBefore360DegreeContainsAnotherWithCommonPartEvenWhenPassingThrough360Degree() throws Exception {
+        final Arc before360 = new Arc(330, 350);
+        final Arc enclosed = new Arc(340, 20);
+
+        assertTrue(before360.contains(enclosed));
     }
 
     @Test
@@ -162,11 +178,35 @@ public class ArcTest {
     }
 
     @Test
-    public void ArcSpreadingThrough360DegreeContainsAnotherArcStartingAfter0() throws Exception {
+    public void ArcSpreadingThrough360DegreeContainsAnotherArcStartingAfter0WhichIsFullyCovered() throws Exception {
         final Arc bigArc = new Arc(300, 100);
         final Arc smallArc = new Arc(0, 40);
 
         assertTrue(bigArc.contains(smallArc));
+    }
+
+    @Test
+    public void ArcSpreadingAcross360DegreeEnclosingTheOneAfter360DegreeCoversIt() throws Exception {
+        final Arc a = new Arc(300, 30);
+        final Arc b = new Arc(0, 10);
+
+        assertTrue(a.covers(b));
+    }
+
+    @Test
+    public void ArcSpreadingAcross360DegreeWhichPartiallyCoversAnotherDoesNotFullyCover() throws Exception {
+        final Arc a = new Arc(300, 10);
+        final Arc b = new Arc(0, 20);
+
+        assertFalse(a.covers(b));
+    }
+
+    @Test
+    public void ArcSpreadingThrough360DegreeContainsAnotherArcWhichStartsIn0DegreeAndOverlaps() throws Exception {
+        final Arc passingThrough360Arc = new Arc(300, 20);
+        final Arc secondArc = new Arc(0, 40);
+
+        assertTrue(passingThrough360Arc.contains(secondArc));
     }
 
     @Test
@@ -196,5 +236,4 @@ public class ArcTest {
         final Arc a = new Arc(340, 10);
         assertTrue(a.isWithinRange(350));
     }
-
 }

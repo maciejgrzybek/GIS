@@ -35,16 +35,31 @@ public class Arc implements Comparable<Arc> {
     }
 
     public boolean intersects(Arc other) {
-        return this.contains(other) || other.contains(this)
-                || this.covers(other) || other.covers(this);
+        return this.contains(other) || other.contains(this);
     }
 
     public boolean contains(Arc other) {
-        return covers(other) || (start < other.start && end < other.end && end > other.start)
+        if (covers(other))
+                return true;
+
+        if (passesThroughModulo()) {
+            if (start <= other.start) // other.start between start and 360 degree
+                return true;
+            else
+                return other.start <= getEnd();
+        }
+        
+        return  (start < other.start && end < other.end && end > other.start)
                 || (start > other.start && start < other.end && end > other.end);
     }
 
     public boolean covers(Arc other) {
+        if (passesThroughModulo()) {
+            if (other.start >= start) // between start and 360 degree
+                return end >= other.end;
+            else
+                return other.start <= getEnd() && other.end <= getEnd(); // between 360 degree and end point
+        }
         return start <= other.start && end >= other.end;
     }
 
@@ -64,6 +79,10 @@ public class Arc implements Comparable<Arc> {
     @Override
     public int compareTo(Arc arc) {
         return ((Integer)getStart()).compareTo(arc.getStart());
+    }
+
+    private boolean passesThroughModulo() {
+        return passesThroughModulo(start, getEnd());
     }
 
     private static boolean passesThroughModulo(int start, int end) {
