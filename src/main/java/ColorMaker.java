@@ -66,12 +66,12 @@ public class ColorMaker {
         int shortestLength = Integer.MAX_VALUE;
 
         for (Arc arc : arcs) {
-            if (arc.isWithinRange(startingPoint)) {
-                int length = arc.getArcLengthFromStartToPointWhichContains(startingPoint);
-                if (length < shortestLength) {
-                    shortestArc = arc;
-                    shortestLength = length;
-                }
+            if (!arc.isWithinRange(startingPoint))
+                continue;
+            final int length = arc.getArcLengthFromStartToPointWhichContains(startingPoint);
+            if (length < shortestLength) {
+                shortestArc = arc;
+                shortestLength = length;
             }
         }
 
