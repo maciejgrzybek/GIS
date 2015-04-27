@@ -1,9 +1,13 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import org.hamcrest.CoreMatchers;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ColorMakerTest {
@@ -96,5 +100,114 @@ public class ColorMakerTest {
         final ColorMaker colorMaker = new ColorMaker(arcs);
 
         assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+    }
+
+    @Test
+    public void WhenTwoArcsAreDisjointTheyHaveTheSameColor() throws Exception {
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(new Arc(10, 20));
+            add(new Arc(30, 40));
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        final HashMap<Integer, List<Arc>> expectedColors = new HashMap<Integer, List<Arc>>() {{
+            put(1, new ArrayList<Arc>() {{
+                add(new Arc(10, 20, 1));
+                add(new Arc(30, 40, 1));
+            }});
+        }};
+
+        colorMaker.colorGraph();
+
+        assertThat(colorMaker.getColors().entrySet(), equalTo(expectedColors.entrySet()));
+    }
+
+    @Test
+    public void WhenTwoArcsHaveCommonPartTheyHaveDifferentColors() throws Exception {
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(new Arc(10, 30));
+            add(new Arc(20, 40));
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        final List<HashMap<Integer, List<Arc>>> expectedColors = new ArrayList<HashMap<Integer, List<Arc>>>() {{
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(20, 40, 2));
+                }});
+            }});
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(20, 40, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 2));
+                }});
+            }});
+        }};
+
+        colorMaker.colorGraph();
+
+        assertThat(colorMaker.getColors().entrySet(), anyOf(equalTo(expectedColors.get(0).entrySet()),
+                                                            equalTo(expectedColors.get(1).entrySet())));
+    }
+
+    @Test
+    public void WhenFirstAndSecondArcsHaveCommonPartAndFirstAndThirdTooTheyAreColoredWithTwoColors() throws Exception {
+        final List<Arc> arcs = new ArrayList<Arc>() {{
+            add(new Arc(10, 30));
+            add(new Arc(20, 40));
+            add(new Arc(5, 15));
+        }};
+        final ColorMaker colorMaker = new ColorMaker(arcs);
+
+        final List<HashMap<Integer, List<Arc>>> expectedColors = new ArrayList<HashMap<Integer, List<Arc>>>() {{
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(20, 40, 2));
+                    add(new Arc(5, 15, 2));
+                }});
+            }});
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(5, 15, 2));
+                    add(new Arc(20, 40, 2));
+                }});
+            }});
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(20, 40, 1));
+                    add(new Arc(5, 15, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 2));
+                }});
+            }});
+            add(new HashMap<Integer, List<Arc>>() {{
+                put(1, new ArrayList<Arc>() {{
+                    add(new Arc(5, 15, 1));
+                    add(new Arc(20, 40, 1));
+                }});
+                put(2, new ArrayList<Arc>() {{
+                    add(new Arc(10, 30, 2));
+                }});
+            }});
+        }};
+
+        colorMaker.colorGraph();
+
+        assertThat(colorMaker.getColors().entrySet(), anyOf(equalTo(expectedColors.get(0).entrySet()),
+                                                            equalTo(expectedColors.get(1).entrySet()),
+                                                            equalTo(expectedColors.get(2).entrySet()),
+                                                            equalTo(expectedColors.get(3).entrySet())));
     }
 }

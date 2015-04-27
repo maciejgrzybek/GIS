@@ -1,4 +1,4 @@
-public class Arc implements Comparable<Arc> {
+public class Arc implements Comparable<Arc>, Cloneable {
     public Arc(int start, int end) {
         this(start, end, 0);
     }
@@ -95,8 +95,23 @@ public class Arc implements Comparable<Arc> {
     }
 
     @Override
+    public Object clone() {
+        return new Arc(start, end, color);
+    }
+
+    @Override
     public int compareTo(Arc arc) {
         return ((Integer)getStart()).compareTo(arc.getStart());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Arc))
+            return false;
+
+        Arc o = (Arc)other;
+
+        return o.start == start && o.end == end && o.color == color;
     }
 
     private boolean passesThroughModulo() {
