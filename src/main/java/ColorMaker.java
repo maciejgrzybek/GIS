@@ -8,9 +8,9 @@ public class ColorMaker {
 
     public void colorGraph() {
         final int startingPoint = getPointWithHighestNumberOfIntersections();
-        final Arc startingArc = getShortestArcCounterClockwiseToThePoint(startingPoint);
+        final int startingArcIdx = getShortestArcCounterClockwiseToThePoint(startingPoint);
 
-        indexArcs(startingArc);
+        indexArcs(startingArcIdx);
 
         for (int i = 0; i < indexedArcs.size(); ++i) {
             final Arc currentArc = indexedArcs.get(i);
@@ -20,20 +20,21 @@ public class ColorMaker {
         }
     }
 
-    private void indexArcs(Arc startingArc) {
+    private void indexArcs(int startingArcIdx) {
         final int totalNumberOfArcs = arcs.size();
         indexedArcs = new ArrayList<>();
         Collections.sort(arcs);
         while (indexedArcs.size() < totalNumberOfArcs) {
-            indexedArcs.add(startingArc);
-            arcs.remove(startingArc);
-            startingArc = getNextArcAfterGiven(startingArc);
+            final Arc arc = arcs.get(startingArcIdx);
+            indexedArcs.add(arc);
+            arcs.remove(startingArcIdx);
+            startingArcIdx = getNextArcAfterGiven(arc);
         }
     }
 
-    private Arc getNextArcAfterGiven(Arc currentArc) {
+    private int getNextArcAfterGiven(Arc currentArc) {
         if (arcs.size() == 0)
-            return null;
+            return -1;
 
         int nextArcIdx = Collections.binarySearch(arcs, new Arc(currentArc.getEnd()+1, -1));
         if (nextArcIdx < 0)
@@ -42,7 +43,7 @@ public class ColorMaker {
         if (nextArcIdx == arcs.size())
             nextArcIdx = 0;
 
-        return arcs.get(nextArcIdx);
+        return nextArcIdx;
     }
 
     private boolean existsColoredArcBeforeArcsEnding(int arcIdx, int color) {
@@ -82,27 +83,28 @@ public class ColorMaker {
         return maxId;
     }
 
-    public Arc getShortestArcCounterClockwiseToThePoint(int startingPoint) {
-        Arc shortestArc = null;
-        Arc arcWithZeroLengthFromStartPoint = null;
+    public int getShortestArcCounterClockwiseToThePoint(int startingPoint) {
+        int shortestArcIdx = -1;
+        int arcWithZeroLengthFromStartPointIdx = -1;
         int shortestLength = Integer.MAX_VALUE;
 
-        for (Arc arc : arcs) {
+        for (int i = 0; i < arcs.size(); ++i) {
+            final Arc arc = arcs.get(i);
             if (!arc.isWithinRange(startingPoint))
                 continue;
             final int length = arc.getArcLengthFromStartToPointWhichContains(startingPoint);
             if (length == 0) {
-                arcWithZeroLengthFromStartPoint = arc;
+                arcWithZeroLengthFromStartPointIdx = i;
             } else if (length < shortestLength) {
-                shortestArc = arc;
+                shortestArcIdx = i;
                 shortestLength = length;
             }
         }
 
-        if (shortestArc == null) {
-            return arcWithZeroLengthFromStartPoint;
+        if (shortestArcIdx == -1) {
+            return arcWithZeroLengthFromStartPointIdx;
         }
-        return shortestArc;
+        return shortestArcIdx;
     }
 
     private void colorArc(Arc arc) {

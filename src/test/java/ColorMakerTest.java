@@ -86,7 +86,7 @@ public class ColorMakerTest {
         }};
         final ColorMaker colorMaker = new ColorMaker(arcs);
 
-        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+        assertEquals(0, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
     }
     
     @Test
@@ -99,7 +99,7 @@ public class ColorMakerTest {
         }};
         final ColorMaker colorMaker = new ColorMaker(arcs);
 
-        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+        assertEquals(1, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ColorMakerTest {
         }};
         final ColorMaker colorMaker = new ColorMaker(arcs);
 
-        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+        assertEquals(1, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ColorMakerTest {
         }};
         final ColorMaker colorMaker = new ColorMaker(arcs);
 
-        assertEquals(expectedArc, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
+        assertEquals(0, colorMaker.getShortestArcCounterClockwiseToThePoint(point));
     }
 
     @Test
