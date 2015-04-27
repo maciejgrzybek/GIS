@@ -7,6 +7,8 @@ public class ColorMaker {
     }
 
     public void colorGraph() {
+        Collections.sort(arcs);
+
         final int startingPoint = getPointWithHighestNumberOfIntersections();
         final int startingArcIdx = getShortestArcCounterClockwiseToThePoint(startingPoint);
 
@@ -23,7 +25,6 @@ public class ColorMaker {
     private void indexArcs(int startingArcIdx) {
         final int totalNumberOfArcs = arcs.size();
         indexedArcs = new ArrayList<>();
-        Collections.sort(arcs);
         while (indexedArcs.size() < totalNumberOfArcs) {
             final Arc arc = arcs.get(startingArcIdx);
             indexedArcs.add(arc);
@@ -32,7 +33,7 @@ public class ColorMaker {
         }
     }
 
-    private int getNextArcAfterGiven(Arc currentArc) {
+    public int getNextArcAfterGiven(Arc currentArc) {
         if (arcs.size() == 0)
             return -1;
 
